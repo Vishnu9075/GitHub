@@ -1,0 +1,3 @@
+1.“Design a RAG system.”
+
+I would split it into ingestion and query pipelines. During ingestion, I would extract text, chunk with overlap, generate embeddings, and store them in a vector database along with metadata. At query time, I would embed the user question, retrieve top-k relevant chunks using cosine similarity, optionally rerank them, and construct a grounded prompt for the LLM. I would constrain the model to answer only from retrieved context and cite sources. For production, I would add caching, evaluation metrics like recall@k, monitoring for hallucinations, and metadata-based access control.
