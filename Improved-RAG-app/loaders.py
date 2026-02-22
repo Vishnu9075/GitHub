@@ -42,4 +42,33 @@ def load_pdf(path: Path) -> List[DocPage]:
     
 
 def load_text_file(path: Path) -> List[DocPage]:
-    text = path.read_text(encoding="utf-8", errors= "ignore")
+    text = path.read_text(encoding="utf-8", errors= "ignore").strip()
+    if not text:
+        return []
+    return [
+        DocPage(
+            text = text,
+            metadata= {
+                "source": str(path),
+                "type": path.suffix.lstrip(".") or "txt",
+                "page" : "1",
+            },
+        )
+    ]
+
+def load_all(data_dir: str) -> List[DocPage]:
+    base = Path(data_dir)
+    if not base.exists():
+        raise FileNotFoundError(f"Missing data directory: {base.resolve()}")
+    
+    out: List[DocPage] = []
+    for p in base.rglob("*"):
+        if p.is_dir():
+            continue
+        ext = p.suffix.lower()
+        if ext == "pdf":
+            out.extend(load_pdf(p))
+        elif ext in [".txt", ".md"]:
+            out.extend(load_text_file(p))
+
+    return out
