@@ -69,7 +69,7 @@ def make_chunks(text: str, chunk_size: int, overlap: int) -> List[str]:
             chunks.append(final)
         return chunks
 
-def chunk_pages(pages, chunk_size: int, overlap: int) -> List[chunk]:
+def chunk_pages(pages, chunk_size: int, overlap: int) -> List[Chunk]:
     """
     Convert loaded pages into chunks with metadata.
 
